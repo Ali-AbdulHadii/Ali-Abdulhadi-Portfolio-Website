@@ -151,7 +151,12 @@ export default function ProjectDetail() {
             <span className="text-xs font-mono text-slate-500 bg-slate-800/50 px-2.5 py-1 rounded-md border border-slate-700/50">
               {project.category}
             </span>
-            {project.listTag ? (
+            {project.currentWork ? (
+              <span className="text-[10px] font-semibold text-emerald-300 bg-emerald-500/15 border border-emerald-400/50 px-2.5 py-1 rounded-full shadow-[0_0_14px_rgba(52,211,153,0.35)] flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Current Work
+              </span>
+            ) : project.listTag ? (
               <span className="text-[10px] font-semibold text-cyan-200 bg-cyan-500/15 border border-cyan-400/60 px-2.5 py-1 rounded-full shadow-[0_0_14px_rgba(34,211,238,0.35)]">
                 {project.listTag}
               </span>
@@ -306,30 +311,16 @@ export default function ProjectDetail() {
         )}
 
         {/* ── OUTCOME ──────────────────────────────────────── */}
-        <Section className="mb-14">
-          <Block label="Outcome & Impact">
-            <div className="bg-gradient-to-br from-cyan-500/8 via-[#071428] to-[#071428] border border-cyan-500/20 rounded-xl p-6 shadow-cyan-sm">
-              <p className="text-slate-300 text-base leading-relaxed">{project.outcome}</p>
+        <Section className="mb-16">
+          <Block label="Outcome">
+            <div className="bg-gradient-to-br from-cyan-500/5 to-transparent border border-cyan-500/15 rounded-xl p-6">
+              <p className="text-slate-300 text-sm leading-relaxed">{project.outcome}</p>
             </div>
           </Block>
         </Section>
 
-        {/* ── NAVIGATION ───────────────────────────────────── */}
-        <div className="mb-0 pb-0 border-t border-cyan-500/10 pt-8">
-          <Link
-            to="/projects"
-            className="inline-flex items-center gap-2 text-slate-500 hover:text-cyan-400 text-sm transition-colors duration-200"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to all projects
-          </Link>
-        </div>
+        <CTASection />
       </div>
-
-      {/* ── CTA ──────────────────────────────────────────────── */}
-      <CTASection />
     </div>
   );
 }

@@ -34,19 +34,45 @@ const availability = [
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'sent'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  const formspreeEndpoint =
+    import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/meevonzw';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Build mailto link as fallback since no backend is connected
-    const subject = encodeURIComponent(form.subject || 'Portfolio Enquiry');
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
-    window.location.href = `mailto:ali.abdulhadii@outlook.com?subject=${subject}&body=${body}`;
-    setStatus('sent');
+
+    try {
+      setStatus('sending');
+
+      const response = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          subject: form.subject || 'Portfolio Enquiry',
+          message: form.message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      setStatus('sent');
+      setForm({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Formspree submission error:', error);
+      setStatus('error');
+    }
   };
 
   return (
@@ -154,8 +180,8 @@ export default function Contact() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-slate-200 font-semibold text-lg">Opening your email client...</h3>
-                <p className="text-slate-500 text-sm">Your default mail app should have opened with the message pre-filled.</p>
+                <h3 className="text-slate-200 font-semibold text-lg">Message sent successfully</h3>
+                <p className="text-slate-500 text-sm">Thanks for reaching out. I’ll get back to you soon.</p>
                 <button
                   onClick={() => setStatus('idle')}
                   className="mt-4 text-cyan-400 text-sm underline underline-offset-4 hover:text-cyan-300"
@@ -223,14 +249,18 @@ export default function Contact() {
 
                 <button
                   type="submit"
+                  disabled={status === 'sending'}
                   className="w-full py-3.5 bg-cyan-500 text-[#020510] font-semibold rounded-lg hover:bg-cyan-400 transition-colors duration-200 text-sm tracking-wide shadow-cyan-md"
                 >
-                  Send Message →
+                  {status === 'sending' ? 'Sending...' : 'Send Message →'}
                 </button>
 
-                <p className="text-slate-600 text-xs text-center">
-                  This will open your email client with the message pre-filled.
-                </p>
+                {status === 'error' && (
+                  <p className="text-rose-400 text-xs text-center">
+                    Couldn&apos;t send your message right now. Please try again in a moment.
+                  </p>
+                )}
+
               </form>
             )}
           </motion.div>

@@ -67,7 +67,12 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
                   {project.category}
                 </span>
               </div>
-              {project.listTag ? (
+              {project.currentWork ? (
+                <span className="text-[10px] font-semibold text-emerald-300 bg-emerald-500/15 border border-emerald-400/50 px-2 py-0.5 rounded-full shadow-[0_0_14px_rgba(52,211,153,0.35)] flex items-center gap-1">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Current Work
+                </span>
+              ) : project.listTag ? (
                 <span className="text-[10px] font-semibold text-cyan-200 bg-cyan-500/15 border border-cyan-400/60 px-2 py-0.5 rounded-full shadow-[0_0_14px_rgba(34,211,238,0.35)]">
                   {project.listTag}
                 </span>
@@ -93,24 +98,21 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
             {/* Stack badges */}
             <div className="flex flex-wrap gap-1.5">
               {project.stack.slice(0, 4).map((tech) => (
-                <TechBadge key={tech} name={tech} size="sm" />
+                <TechBadge key={tech} name={tech} size="sm" variant="glow" />
               ))}
               {project.stack.length > 4 && (
-                <span className="px-2 py-0.5 text-xs text-slate-500 font-mono">
+                <span className="text-[11px] font-mono text-slate-600 px-2 py-0.5">
                   +{project.stack.length - 4}
                 </span>
               )}
             </div>
 
-            {/* Footer */}
-            <div className="flex items-center justify-between pt-2 border-t border-cyan-500/8">
-              <span className="text-slate-600 text-xs font-mono">{project.role}</span>
-              <span className="text-cyan-400 text-xs font-medium flex items-center gap-1 group-hover:gap-2 transition-all duration-200">
-                View case study
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
+            {/* Arrow */}
+            <div className="flex items-center gap-1.5 text-slate-600 text-xs group-hover:text-cyan-400 transition-colors duration-200 font-mono mt-auto">
+              View case study
+              <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
             </div>
           </div>
         </div>

@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import CursorTrail from './components/ui/CursorTrail';
-import AmbientBackground from './components/background/AmbientBackground';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
@@ -49,9 +48,6 @@ function AppRoutes() {
 export default function App() {
   return (
     <HashRouter>
-      {/* Global stars background on all pages */}
-      <AmbientBackground />
-
       {/*
         relative + z-[1] creates a stacking context that sits above the
         fixed background canvas rendered globally.
@@ -64,8 +60,6 @@ export default function App() {
         </main>
         <Footer />
       </div>
-
-      {/* Cursor trail — above everything at z-60 */}
       <CursorTrail />
     </HashRouter>
   );

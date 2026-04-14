@@ -2,6 +2,13 @@
 
 A dark, futuristic, case-study-driven engineering portfolio built with React + Vite + TypeScript + Tailwind CSS.
 
+## Latest Updates (April 2026)
+
+- Curated project detail pages so **code snippets are shown only where they represent strong engineering accomplishments**.
+- Upgraded selected snippets (e.g., Roomaty and AI Financial Chat) to more advanced, architecture-level examples.
+- Contact form now submits via **Formspree** (async submit, loading, success, and error states).
+- Media references verified for production: all assets referenced in `src/data/projects.ts` resolve to files in `public/images`.
+
 ## Quick Start
 
 ```bash
@@ -37,6 +44,18 @@ Every push to the `main` branch triggers the workflow at:
 ```
 
 The workflow builds the app and publishes `dist/` to GitHub Pages.
+
+### 3) Push your updates
+
+```bash
+git add .
+git commit -m "Update portfolio projects, Formspree contact, and deployment docs"
+git push origin main
+```
+
+After push, check:
+- **Actions** tab for successful workflow run
+- **Settings → Pages** shows the deployed site URL
 
 ### Notes
 
@@ -89,6 +108,23 @@ All project content lives in `src/data/projects.ts`. Each project object include
 - Title, slug, category, summary, role, stack
 - Problem, solution, features, technicalDetails, outcome
 - Optional `diagram` (Mermaid code) and `codeSnippet`
+
+## Contact Form (Formspree)
+
+- Current endpoint in app: `https://formspree.io/f/meevonzw`
+- Optional override via env:
+
+```bash
+VITE_FORMSPREE_ENDPOINT=https://formspree.io/f/meevonzw
+```
+
+If `VITE_FORMSPREE_ENDPOINT` is set, it takes priority.
+
+## Media Reliability Notes
+
+- Project gallery assets are sourced from `public/images`.
+- `src/data/projects.ts` uses `asset('/images/...')` paths, which are stable for Vite + GitHub Pages output.
+- Keep filenames lowercase/kebab-case where possible to avoid case-sensitivity issues on some hosts.
 
 ## Design System
 

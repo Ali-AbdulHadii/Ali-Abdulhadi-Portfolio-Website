@@ -6,11 +6,13 @@ import ProjectCard from '../components/ui/ProjectCard';
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All');
+  const [currentOnly, setCurrentOnly] = useState(false);
 
-  const filtered =
-    activeCategory === 'All'
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
+  const filtered = (() => {
+    let list = activeCategory === 'All' ? projects : projects.filter((p) => p.category === activeCategory);
+    if (currentOnly) list = list.filter((p) => p.currentWork);
+    return list;
+  })();
 
   return (
     <div className="min-h-screen pt-28 pb-24">
@@ -27,8 +29,24 @@ export default function Projects() {
           />
         </div>
 
-        {/* Category filter */}
-        <div className="mb-10 flex flex-wrap gap-2">
+        {/* Filters row */}
+        <div className="mb-10 flex flex-wrap items-center gap-3">
+          {/* Current Work toggle */}
+          <button
+            onClick={() => setCurrentOnly((v) => !v)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              currentOnly
+                ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-400/50 shadow-[0_0_12px_rgba(52,211,153,0.2)]'
+                : 'text-slate-500 border border-slate-700/50 hover:text-emerald-300 hover:border-emerald-500/30'
+            }`}
+          >
+            <span className={`inline-block w-1.5 h-1.5 rounded-full ${currentOnly ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'}`} />
+            Current Work
+          </button>
+
+          <div className="w-px h-6 bg-slate-700/60" />
+
+          {/* Category filters */}
           {(['All', ...categories] as const).map((cat) => (
             <button
               key={cat}

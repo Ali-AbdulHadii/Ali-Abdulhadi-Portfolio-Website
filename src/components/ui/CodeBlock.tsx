@@ -44,9 +44,7 @@ export default function CodeBlock({ code, language, label }: CodeBlockProps) {
       {/* Code */}
       <div className="overflow-x-auto">
         <pre className={`language-${language} !m-0 !rounded-none !border-0 !bg-transparent p-4 text-[0.78rem] leading-relaxed`}>
-          <code ref={ref} className={`language-${language}`}>
-            {code.trim()}
-          </code>
+          <code ref={ref} className={`language-${language}`}>{code}</code>
         </pre>
       </div>
     </div>

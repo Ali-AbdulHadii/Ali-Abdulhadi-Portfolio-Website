@@ -14,3 +14,6 @@ pnpm-debug.log*
 Ali Abdulhadi Portfolio Website/
 You are a senior frontend engineer and product designer.docx
 vite.config.ts.timestamp-*.mjs
+
+# Private local notes for AI/project memory (do not commit)
+PROJECT_OVERVIEW_PRIVATE.mk

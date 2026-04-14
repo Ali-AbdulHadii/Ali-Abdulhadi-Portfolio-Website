@@ -169,17 +169,18 @@ export default function ParticleSphere() {
         ctx.fillStyle = glow;
         ctx.fill();
 
-        // Hard core dot — bright white-cyan centre
+        // Hard bright core dot
+        const coreR = p.sz * 0.55;
         ctx.beginPath();
-        ctx.arc(p.px, p.py, Math.max(p.sz * 0.62, 0.45), 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(188, 238, 255, ${Math.min(a * 1.12, 0.93)})`;
+        ctx.arc(p.px, p.py, coreR, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(180, 240, 255, ${Math.min(a * 0.85, 1)})`;
         ctx.fill();
       }
 
       animId = requestAnimationFrame(render);
     };
 
-    render();
+    animId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animId);
@@ -190,9 +191,9 @@ export default function ParticleSphere() {
   return (
     <canvas
       ref={canvasRef}
-      aria-hidden="true"
-      className="pointer-events-none select-none fixed inset-0"
+      className="fixed inset-0 pointer-events-none"
       style={{ zIndex: 0 }}
+      aria-hidden="true"
     />
   );
 }

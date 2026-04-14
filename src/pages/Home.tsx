@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { featuredProjects } from '../data/projects';
+import { featuredProjects, projects } from '../data/projects';
+
+const currentWorkProjects = projects.filter((p) => p.currentWork);
 import { techStack } from '../data/stack';
 import SectionHeader from '../components/ui/SectionHeader';
 import ProjectCard from '../components/ui/ProjectCard';
@@ -211,6 +213,112 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── CURRENT WORK SPOTLIGHT ─────────────────────────────── */}
+      <section className="py-24 bg-[#040c1a] border-y border-emerald-500/8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-400 text-xs font-mono tracking-widest uppercase">Live Projects</span>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-100 leading-tight">
+                Current Work
+              </h2>
+              <p className="mt-3 text-slate-400 text-base max-w-xl">
+                Two flagship platforms in active production, built from the ground up with custom code, enterprise-grade security, and premium design for the fragrance industry.
+              </p>
+            </div>
+            <Link
+              to="/projects"
+              className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 border border-emerald-500/30 text-emerald-400 text-sm font-medium rounded-lg hover:bg-emerald-500/10 hover:border-emerald-400/50 transition-all duration-200"
+            >
+              View all projects
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {currentWorkProjects.map((project, i) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: i * 0.1 }}
+              >
+                <Link to={`/projects/${project.slug}`} className="group block h-full">
+                  <div className="h-full bg-[#071428] border border-emerald-500/15 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:border-emerald-500/35 hover:shadow-[0_0_32px_rgba(52,211,153,0.1)] hover:-translate-y-1">
+                    {/* Top accent bar */}
+                    <div className="h-0.5 w-full bg-gradient-to-r from-emerald-500/0 via-emerald-400/60 to-emerald-500/0" />
+
+                    <div className="flex flex-col gap-6 p-7 flex-1">
+                      {/* Header */}
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-semibold text-emerald-300 bg-emerald-500/15 border border-emerald-400/40 px-2 py-0.5 rounded-full flex items-center gap-1.5">
+                              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                              Current Work
+                            </span>
+                            <span className="text-xs font-mono text-slate-600 bg-slate-800/40 px-2 py-0.5 rounded border border-slate-700/40">
+                              {project.category}
+                            </span>
+                          </div>
+                          <h3 className="text-2xl font-bold text-slate-100 group-hover:text-emerald-300 transition-colors duration-200">
+                            {project.title}
+                          </h3>
+                        </div>
+                        <svg className="w-5 h-5 text-slate-600 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all duration-200 shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
+                      </div>
+
+                      {/* Summary */}
+                      <p className="text-slate-400 text-sm leading-relaxed">
+                        {project.summary}
+                      </p>
+
+                      {/* Key highlights — first 4 features */}
+                      <ul className="space-y-2.5">
+                        {project.features.slice(0, 4).map((feat, fi) => (
+                          <li key={fi} className="flex items-start gap-3 text-sm">
+                            <span className="text-emerald-400/60 mt-0.5 shrink-0">+</span>
+                            <span className="text-slate-400">{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {/* Stack */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {project.stack.slice(0, 6).map((tech) => (
+                          <span key={tech} className="text-[11px] font-mono text-slate-500 bg-slate-800/50 border border-slate-700/40 px-2 py-0.5 rounded">
+                            {tech}
+                          </span>
+                        ))}
+                        {project.stack.length > 6 && (
+                          <span className="text-[11px] font-mono text-slate-600 px-2 py-0.5">+{project.stack.length - 6} more</span>
+                        )}
+                      </div>
+
+                      {/* CTA */}
+                      <div className="pt-1 flex items-center gap-1.5 text-emerald-400 text-sm font-medium group-hover:gap-3 transition-all duration-200">
+                        View Case Study
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FEATURED PROJECTS ──────────────────────────────────── */}
       <section className="py-24 max-w-7xl mx-auto px-6 w-full">
         <SectionHeader
@@ -279,31 +387,27 @@ export default function Home() {
       {/* ── TECH STACK ─────────────────────────────────────────── */}
       <section className="py-24 max-w-7xl mx-auto px-6 w-full">
         <SectionHeader
-          label="Core Stack"
-          title="Technologies I Work With"
-          subtitle="A broad and practical stack spanning frontend, backend, mobile, infrastructure, and integrations."
-          align="center"
-          className="mb-12 mx-auto max-w-2xl"
+          label="Technology"
+          title="Core Stack"
+          subtitle="Technologies I work with across the full development lifecycle."
+          className="mb-12"
         />
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-wrap gap-3 justify-center"
-        >
-          {techStack.map((item, i) => (
-            <motion.div
-              key={item.name}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.025 }}
-            >
-              <TechBadge name={item.name} variant="outline" />
-            </motion.div>
+        <div className="space-y-8">
+          {Array.from(new Set(techStack.map((t) => t.category))).map((cat) => (
+            <div key={cat}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-px flex-1 bg-cyan-500/10" />
+                <span className="text-xs font-mono text-slate-500 tracking-widest uppercase">{cat}</span>
+                <div className="h-px flex-1 bg-cyan-500/10" />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {techStack.filter((t) => t.category === cat).map((item) => (
+                  <TechBadge key={item.name} name={item.name} size="md" variant="glow" />
+                ))}
+              </div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </section>
 
       {/* ── CTA ────────────────────────────────────────────────── */}

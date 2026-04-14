@@ -83,20 +83,19 @@ export default function DiagramContainer({ title, code }: DiagramContainerProps)
         <span className="ml-auto text-cyan-500/40 text-xs font-mono">diagram</span>
       </div>
 
-      {/* Diagram */}
-      <div className="p-6 overflow-x-auto">
+      {/* Body */}
+      <div className="p-4 min-h-[120px] flex items-center justify-center">
         {error ? (
-          <div className="min-h-[100px] flex items-center justify-center text-rose-300/80 text-sm">
-            {error}
-          </div>
+          <p className="text-slate-500 text-xs font-mono">{error}</p>
         ) : svg ? (
           <div
-            className="mermaid flex justify-center min-h-[100px]"
+            className="w-full overflow-x-auto flex justify-center [&_svg]:mx-auto [&_svg]:max-w-full [&_svg]:h-auto"
             dangerouslySetInnerHTML={{ __html: svg }}
           />
         ) : (
-          <div className="min-h-[100px] flex items-center justify-center text-slate-600 text-sm animate-pulse">
-            Rendering diagram…
+          <div className="flex items-center gap-2 text-slate-600 text-xs font-mono">
+            <div className="w-3 h-3 border border-cyan-500/40 border-t-cyan-400 rounded-full animate-spin" />
+            Rendering diagram...
           </div>
         )}
       </div>

@@ -15,6 +15,7 @@ export interface Project {
   slug: string;
   category: Category;
   listTag?: string;
+  currentWork?: boolean;
   summary: string;
   role: string;
   stack: string[];
@@ -49,6 +50,152 @@ const asset = (path: string): string => path.replace(/^\//, '');
 // ---------------------------------------------------------------
 
 export const projects: Project[] = [
+  // ─── 0a. KAYAN AL ROOH ────────────────────────────────────────
+  {
+    id: 'kayan-al-rooh',
+    title: 'Kayan Al Rooh',
+    slug: 'kayan-al-rooh',
+    category: 'Business Websites',
+    listTag: 'Current Work',
+    currentWork: true,
+    featured: true,
+    summary:
+      'End-to-end engineering of a premium B2B platform for a private-label perfume manufacturer. Custom-coded from the ground up with a high-end visual identity, Cloudflare enterprise security, NDA-protected internal tooling, and a full client onboarding infrastructure.',
+    role: 'Lead Full-Stack Developer & Platform Architect',
+    stack: ['Custom Code', 'PHP', 'JavaScript', 'MySQL', 'Cloudflare Enterprise', 'Zero Trust', 'HTML', 'CSS', 'GSAP'],
+    gallery: [
+      asset('/images/kayanalroohshowcase.mp4'),
+      asset('/images/kayanalroohherosection.png'),
+      asset('/images/secondsectionkayanalrooh.png'),
+    ],
+    problem:
+      'Kayan Al Rooh operates in a premium B2B segment of the fragrance manufacturing industry, servicing brands and retailers who need private-label perfume production. The business required a digital platform that could simultaneously command confidence from enterprise clients, protect sensitive operational data, and provide a seamless onboarding experience for new manufacturing partners. Off-the-shelf solutions lacked the security depth and visual caliber needed for the brand. All client communications, product formulations, and manufacturing agreements required strict confidentiality, which ruled out any third-party CMS with shared infrastructure.',
+    solution:
+      'Designed and built the entire platform from scratch using custom PHP and JavaScript, giving full control over every layer of the stack. The public-facing site was engineered with a premium, high-end visual identity reflecting the luxury positioning of the brand. Underneath the surface, a private operational layer was built using Cloudflare Zero Trust, hosting NDA-protected internal tools accessible only to authorized personnel and onboarded clients. A structured client onboarding flow handles partner intake, document exchange, and project initialization in a controlled, auditable environment.',
+    features: [
+      'Fully custom-coded platform: no WordPress, no builders, no shared CMS infrastructure',
+      'High-end brand identity implementation with premium typography, smooth scroll animations, and cinematic hero sections powered by GSAP',
+      'Cloudflare Enterprise integration: DDoS protection, WAF rules, bot management, and edge-cached asset delivery',
+      'Cloudflare Zero Trust access layer for all internal tooling: identity-verified access only, no public exposure',
+      'NDA-protected internal workspace: secure document vault, formulation sheets, and client-specific project files',
+      'Client onboarding portal: structured intake form, agreement signing workflow, and project initialization checklist',
+      'Manufacturing partner dashboard: order status tracking, sample request management, and production timeline visibility',
+      'Custom admin panel for internal operations: client management, NDA status tracking, and communication logs',
+      'Full mobile responsiveness with premium interaction design across all breakpoints',
+    ],
+    technicalDetails:
+      'The platform is split into two distinct layers. The public site is a statically-optimized PHP-rendered application with JavaScript-driven animations, served through Cloudflare CDN for sub-100ms global response times. The internal layer runs behind Cloudflare Access with WARP-tunneled routing, ensuring no internal endpoint is publicly resolvable. The client portal uses session-based PHP authentication layered on top of Cloudflare Access for double identity verification. The document vault stores files in a non-web-accessible directory, served only through authenticated PHP file-streaming endpoints. All database queries are parameterized and schema access is segmented by client account ID to prevent any cross-client data exposure. GSAP ScrollTrigger powers the hero and feature reveal animations, with careful performance budgeting to maintain a Lighthouse score above 90.',
+    outcome:
+      'The platform launched as a flagship digital presence for Kayan Al Rooh, elevating the brand to the visual standard of luxury manufacturing firms. Internal operations moved from scattered emails and spreadsheets to a centralized, auditable, and secure platform. Client onboarding time was reduced significantly, and the Zero Trust layer has maintained zero unauthorized access events since launch. Currently in active production use and ongoing development.',
+    diagram: {
+      title: 'Platform Architecture: Public + Internal Layer',
+      code: `flowchart TD
+    subgraph Public["Public-Facing Site"]
+      A[Visitor Browser] -->|Cloudflare CDN| B[PHP Application Server]
+      B --> C[Premium Brand Site]
+      C --> D[Client Onboarding CTA]
+    end
+    subgraph ZeroTrust["Internal Layer - Zero Trust Protected"]
+      D -->|Submit intake form| E[Onboarding Controller]
+      E --> F[(MySQL - Client DB)]
+      G[Authorized Staff/Client] -->|Cloudflare Access + WARP| H[Identity Verification]
+      H -->|Pass| I[Internal Portal]
+      H -->|Fail| J[Block]
+      I --> K[NDA Document Vault]
+      I --> L[Manufacturing Dashboard]
+      I --> M[Admin Operations Panel]
+      K --> N[PHP File Streamer]
+      N --> O[Secure Download]
+    end`,
+    },
+    codeSnippet: {
+      language: 'php',
+      label: 'Secure Document Vault Streamer (PHP)',
+      code: `<?php
+// Authenticated file streaming endpoint — files never stored in webroot
+function stream_vault_document(int $client_id, string $doc_slug): void {
+    $session = require_auth(); // Validates CF Access JWT + PHP session
+
+    $doc = db_query(
+        "SELECT file_path, mime_type, original_name
+         FROM vault_documents
+         WHERE slug = ? AND client_id = ? AND status = 'active'",
+        [$doc_slug, $client_id]
+    )->fetch();
+
+    if (!$doc || $doc['client_id'] !== $session->client_id) {
+        http_response_code(403);
+        exit('Access denied.');
+    }
+
+    // File lives outside document root — not directly accessible
+    $abs_path = VAULT_BASE_DIR . $doc['file_path'];
+    if (!file_exists($abs_path)) {
+        http_response_code(404);
+        exit('Document not found.');
+    }
+
+    header('Content-Type: ' . $doc['mime_type']);
+    header('Content-Disposition: inline; filename="' . $doc['original_name'] . '"');
+    header('X-Content-Type-Options: nosniff');
+    header('Cache-Control: no-store, private');
+
+    readfile($abs_path); // Stream to authenticated client
+    audit_log($session->client_id, 'vault_access', $doc_slug);
+    exit;
+}`,
+    },
+  },
+
+  // ─── 0b. KIANA FRAGRANCE ──────────────────────────────────────
+  {
+    id: 'kiana-fragrance',
+    title: 'Kiana Fragrance',
+    slug: 'kiana-fragrance',
+    category: 'E-Commerce & Billing',
+    listTag: 'Current Work',
+    currentWork: true,
+    featured: true,
+    summary:
+      'Designed and developed a premium B2C perfume e-commerce storefront using WordPress, Elementor, WooCommerce, and custom code. The project focused on a luxury visual identity, clean buying flow, and conversion-first UX.',
+    role: 'Lead Full-Stack Developer & E-Commerce Architect',
+    stack: ['WordPress', 'Elementor', 'WooCommerce', 'Custom Code', 'PHP', 'JavaScript', 'MySQL', 'Cloudflare', 'CSS', 'Meta Pixel', 'Google Analytics 4'],
+    gallery: [asset('/images/kianafragrance.png')],
+    problem:
+      'The niche perfume market is saturated with brands using identical WooCommerce templates and generic layouts. Kiana Fragrance needed a storefront that communicated luxury, exclusivity, and artistic identity from the first pixel, while also being engineered for high conversion rates. The challenge was to elevate the visual and UX standard far beyond what builders or templates could achieve, while still maintaining a robust e-commerce backend. Product presentation required a cinematic quality, with scent storytelling, rich photography, and editorial-style collection pages, all of which demanded custom-coded templates rather than off-the-shelf solutions.',
+    solution:
+      'Built the storefront on WordPress with Elementor for flexible content control and WooCommerce for product/order management, then extended it with custom code for premium UI behavior and conversion improvements. Product and collection pages were redesigned for brand storytelling, while cart and checkout were streamlined to reduce friction. Analytics and tracking were integrated to support performance marketing decisions.',
+    features: [
+      'WordPress + Elementor architecture for fast page building and flexible content updates',
+      'WooCommerce storefront with custom product, category, cart, and checkout enhancements',
+      'Premium product presentation with high-quality imagery, structured scent-note sections, and branded layouts',
+      'Custom code modules for interaction polish, UX improvements, and conversion-focused UI behavior',
+      'Conversion-optimized checkout with reduced friction, trust elements, and cleaner purchase flow',
+      'Meta Pixel and GA4 enhanced e-commerce tracking for attribution and funnel performance',
+      'Gift packaging upsell integration in cart/checkout flow',
+      'Cloudflare CDN + image optimization for speed, security, and stable performance',
+    ],
+    technicalDetails:
+      'The platform uses WordPress as the CMS foundation, Elementor for visual page composition, and WooCommerce for catalog, checkout, and order workflows. Custom PHP/JS/CSS was added to override default WooCommerce UX patterns where needed, including product-page layout behavior, cart interactions, and checkout simplification. Tracking includes Meta Pixel and GA4 enhanced e-commerce events for full funnel visibility. Cloudflare handles caching, security filtering, and global asset delivery to maintain fast load times across regions.',
+    outcome:
+      'Kiana Fragrance launched with a polished premium storefront that better reflects the brand and improves user trust during purchase. The updated product and checkout experience improved overall usability and conversion flow, while analytics integration enabled clearer attribution and ongoing optimization. The platform remains in active production with iterative enhancements.',
+    diagram: {
+      title: 'WordPress + WooCommerce Conversion Flow',
+      code: `flowchart TD
+    A[User Arrives] --> B{Entry Point}
+    B -->|Search / Social Ad| C[Landing / Collection Page]
+    B -->|Direct| F[Product Detail Page]
+    C --> F
+    F -->|Add to Cart| G[Cart Page]
+    G -->|Gift packaging upsell| H[Enhanced Cart]
+    H --> I[Checkout - Minimal Fields]
+    I -->|Order complete| J[WooCommerce Order DB]
+    J --> K[Meta Conversions API]
+    J --> L[GA4 Purchase Event]
+    K & L --> M[Marketing Attribution Dashboard]`,
+    },
+  },
+
   // ─── 1. CORPORATE & BRAND WEBSITES ────────────────────────────
   {
     id: 'corporate-websites',
@@ -161,10 +308,11 @@ function handle_leave_request( int $request_id, string $action, int $approver_id
   // ─── 3. MAKAAH E-COMMERCE ─────────────────────────────────────
   {
     id: 'makaah-ecommerce',
-    title: 'Makaah B2C E-Commerce',
+    title: 'Anwar Makaah B2C E-Commerce',
     slug: 'makaah-ecommerce',
     category: 'E-Commerce & Billing',
     featured: false,
+    gallery: [asset('/images/anwarmakaah.png')],
     summary:
       'Developed a B2C e-commerce storefront using WordPress and WooCommerce, featuring product presentation, marketing pixel integrations, and conversion-focused UX.',
     role: 'E-Commerce Developer',
@@ -388,35 +536,68 @@ public class BillingWebhookController : ControllerBase
     },
     codeSnippet: {
       language: 'dart',
-      label: 'Gift Animation Sequencer (Flutter/Dart)',
-      code: `class GiftAnimationPlayer extends StatefulWidget {
-  final List<String> frames;
-  final Duration frameDuration;
-  const GiftAnimationPlayer({required this.frames, this.frameDuration = const Duration(milliseconds: 80), super.key});
+      label: 'Global Gift Event Orchestrator (Flutter/Dart)',
+      code: `class GiftEventOrchestrator {
+  final _inbound = StreamController<GiftEvent>.broadcast();
+  final _outbound = StreamController<GiftRenderJob>.broadcast();
+  final _dedupe = <String, DateTime>{};
 
-  @override
-  State<GiftAnimationPlayer> createState() => _GiftAnimationPlayerState();
-}
+  // Limits simultaneous high-tier gift animations to protect FPS.
+  int _activeGlobalAnimations = 0;
+  static const int _maxGlobalAnimations = 2;
 
-class _GiftAnimationPlayerState extends State<GiftAnimationPlayer> {
-  int _frame = 0;
-  Timer? _timer;
+  Stream<GiftRenderJob> get renderJobs => _outbound.stream;
 
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(widget.frameDuration, (_) {
-      setState(() {
-        _frame = (_frame + 1) % widget.frames.length;
-      });
+  void push(GiftEvent event) => _inbound.add(event);
+
+  void start() {
+    _inbound.stream.listen((event) async {
+      // 1) Idempotency guard (events can arrive multiple times in flaky networks)
+      if (_isDuplicate(event.id)) return;
+
+      // 2) Build a deterministic render priority
+      final priority = switch (event.tier) {
+        GiftTier.mega => 0,
+        GiftTier.large => 1,
+        GiftTier.standard => 2,
+      };
+
+      // 3) Back-pressure: defer heavy global animations when cap is reached
+      if (event.scope == GiftScope.global && _activeGlobalAnimations >= _maxGlobalAnimations) {
+        await Future.delayed(const Duration(milliseconds: 220));
+      }
+
+      if (event.scope == GiftScope.global) _activeGlobalAnimations++;
+
+      _outbound.add(
+        GiftRenderJob(
+          eventId: event.id,
+          roomIds: event.scope == GiftScope.global ? event.activeRoomIds : [event.roomId],
+          spriteSheet: event.spriteSheet,
+          audioCue: event.audioCue,
+          priority: priority,
+          onComplete: () {
+            if (event.scope == GiftScope.global) {
+              _activeGlobalAnimations = (_activeGlobalAnimations - 1).clamp(0, _maxGlobalAnimations);
+            }
+          },
+        ),
+      );
     });
   }
 
-  @override
-  Widget build(BuildContext context) => Image.asset(widget.frames[_frame]);
+  bool _isDuplicate(String eventId) {
+    final now = DateTime.now();
+    final seen = _dedupe[eventId];
+    if (seen != null && now.difference(seen).inSeconds < 15) return true;
+    _dedupe[eventId] = now;
+    return false;
+  }
 
-  @override
-  void dispose() { _timer?.cancel(); super.dispose(); }
+  void dispose() {
+    _inbound.close();
+    _outbound.close();
+  }
 }`,
     },
   },
@@ -465,33 +646,66 @@ class _GiftAnimationPlayerState extends State<GiftAnimationPlayer> {
     },
     codeSnippet: {
       language: 'dart',
-      label: 'OpenAI Streaming Chat (Dart)',
-      code: `Future<void> sendMessage(String userMessage) async {
-  _history.add({'role': 'user', 'content': userMessage});
-  final response = await http.post(
+      label: 'Resilient Multi-Channel OpenAI Stream Handler (Dart)',
+      code: `Future<void> sendInstrumentMessage({
+  required InstrumentChannel channel,
+  required String userMessage,
+  required String apiKey,
+}) async {
+  final history = _channelHistory[channel] ?? <Map<String, String>>[];
+  final requestId = const Uuid().v4();
+
+  // Optimistic local write
+  history.add({'role': 'user', 'content': userMessage});
+  _channelHistory[channel] = history;
+  _pushUiState(channel, ChatState.streaming(requestId));
+
+  final request = http.Request(
+    'POST',
     Uri.parse('https://api.openai.com/v1/chat/completions'),
-    headers: {
-      'Authorization': 'Bearer \$apiKey',
+  )
+    ..headers.addAll({
+      'Authorization': 'Bearer $apiKey',
       'Content-Type': 'application/json',
-    },
-    body: jsonEncode({
+      'X-Request-ID': requestId,
+    })
+    ..body = jsonEncode({
       'model': 'gpt-4o',
       'stream': true,
       'messages': [
-        {'role': 'system', 'content': _expertSystemPrompt},
-        ..._history,
+        {'role': 'system', 'content': _promptByChannel(channel)},
+        ...history,
       ],
-    }),
-  );
+      'temperature': 0.3,
+    });
 
-  // Process streamed chunks
-  final chunks = utf8.decoder.bind(response.stream).transform(LineSplitter());
-  await for (final line in chunks) {
-    if (line.startsWith('data: ') && line != 'data: [DONE]') {
-      final delta = jsonDecode(line.substring(6))['choices'][0]['delta'];
-      if (delta['content'] != null) _appendToken(delta['content'] as String);
-    }
+  final streamed = await _http.send(request);
+  if (streamed.statusCode >= 400) {
+    _pushUiState(channel, ChatState.error('OpenAI rejected request (\${streamed.statusCode}).'));
+    return;
   }
+
+  final assistantBuffer = StringBuffer();
+  await for (final line in streamed.stream.transform(utf8.decoder).transform(const LineSplitter())) {
+    if (!line.startsWith('data: ') || line == 'data: [DONE]') continue;
+
+    final payload = jsonDecode(line.substring(6)) as Map<String, dynamic>;
+    final delta = payload['choices']?[0]?['delta']?['content'] as String?;
+    if (delta == null || delta.isEmpty) continue;
+
+    assistantBuffer.write(delta);
+    _appendPartialAssistantMessage(channel, requestId, assistantBuffer.toString());
+  }
+
+  final assistantReply = assistantBuffer.toString().trim();
+  if (assistantReply.isEmpty) {
+    _pushUiState(channel, ChatState.error('No response content received.'));
+    return;
+  }
+
+  history.add({'role': 'assistant', 'content': assistantReply});
+  _channelHistory[channel] = _trimHistory(history, maxMessages: 20);
+  _pushUiState(channel, ChatState.idle());
 }`,
     },
   },
@@ -657,10 +871,12 @@ export const categories: Category[] = [
 export const featuredProjects = projects.filter((p) => p.featured);
 
 function normalizeSlug(value: string): string {
-  return decodeURIComponent(value).trim().replace(/\/+$/, '').toLowerCase();
+  return decodeURIComponent(value).trim().replace(/\s+/g, '-').toLowerCase();
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
   const normalized = normalizeSlug(slug);
-  return projects.find((p) => normalizeSlug(p.slug) === normalized);
+  return projects.find(
+    (p) => normalizeSlug(p.slug) === normalized || normalizeSlug(p.id) === normalized,
+  );
 }
