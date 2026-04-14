@@ -44,6 +44,8 @@ export interface Project {
   };
 }
 
+const asset = (path: string): string => path.replace(/^\//, '');
+
 // ---------------------------------------------------------------
 
 export const projects: Project[] = [
@@ -60,10 +62,10 @@ export const projects: Project[] = [
     role: 'Frontend Engineer & Web Developer',
     stack: ['WordPress', 'Elementor', 'Cloudflare Enterprise', 'SEO', 'HTML', 'CSS', 'JavaScript'],
     gallery: [
-      '/images/farhood-group.mp4',
-      '/images/farhood-perfumes.mp4',
-      '/images/farhood-rental.mp4',
-      '/images/unicare-cosmetics.mp4',
+      asset('/images/farhood-group.mp4'),
+      asset('/images/farhood-perfumes.mp4'),
+      asset('/images/farhood-rental.mp4'),
+      asset('/images/unicare-cosmetics.mp4'),
     ],
     problem:
       'Multiple business units (including luxury perfumes, car rentals, yachts, and cosmetics) required professional web presence with consistent brand identity, strong search visibility, and secure, performant infrastructure across dozens of distinct domains.',
@@ -192,7 +194,7 @@ function handle_leave_request( int $request_id, string $action, int $approver_id
     slug: 'ml-build-guide-platform',
     category: 'Data & AI Products',
     featured: true,
-    gallery: ['/images/ml-build.png'],
+    gallery: [asset('/images/ml-build.png')],
     summary:
       'Maintained and developed a long-running Mobile Legends guide platform from 2019 to 2023, handling database architecture, frontend delivery, and structured content management for thousands of hero builds.',
     role: 'Backend Developer & Content Systems Engineer',
@@ -347,7 +349,7 @@ public class BillingWebhookController : ControllerBase
     slug: 'roomaty',
     category: 'Mobile & Real-Time Apps',
     featured: true,
-    gallery: ['/images/roomaty-room-image.jpeg', '/images/roomaty-tasks.jpeg'],
+    gallery: [asset('/images/roomaty-room-image.jpeg'), asset('/images/roomaty-tasks.jpeg')],
     summary:
       'Contributed to Roomaty, a room-based social platform with live voice rooms, reward systems, gifting animations, and real-time interactions. Built on Flutter with FlutterFlow design scaffolding.',
     role: 'Mobile Developer',
