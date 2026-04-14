@@ -6,6 +6,7 @@ import SectionHeader from '../components/ui/SectionHeader';
 import ProjectCard from '../components/ui/ProjectCard';
 import TechBadge from '../components/ui/TechBadge';
 import CTASection from '../components/ui/CTASection';
+import ParticleSphere from '../components/ui/ParticleSphere';
 
 // Stats data
 const stats = [
@@ -28,11 +29,13 @@ export default function Home() {
     <div className="flex flex-col">
       {/* ── HERO ───────────────────────────────────────────────── */}
       <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20">
+        {/* Hero-only sphere (global stars remain behind all pages) */}
+        <ParticleSphere />
+
         {/* Grid background */}
         <div className="absolute inset-0 grid-bg" />
-        {/* Radial glow */}
-        <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-cyan-600/4 rounded-full blur-[100px] pointer-events-none" />
+        {/* Subtle left-side ambient glow — keeps left column legible */}
+        <div className="absolute top-1/3 left-0 w-[420px] h-[420px] bg-cyan-500/4 rounded-full blur-[110px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-6 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

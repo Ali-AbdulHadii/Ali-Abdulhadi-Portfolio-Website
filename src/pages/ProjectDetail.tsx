@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getProjectBySlug } from '../data/projects';
@@ -5,6 +6,84 @@ import TechBadge from '../components/ui/TechBadge';
 import CodeBlock from '../components/ui/CodeBlock';
 import DiagramContainer from '../components/ui/DiagramContainer';
 import CTASection from '../components/ui/CTASection';
+
+function DeferredImage({
+  src,
+  alt,
+  className,
+  eager = false,
+}: {
+  src: string;
+  alt: string;
+  className: string;
+  eager?: boolean;
+}) {
+  const [shouldLoad, setShouldLoad] = useState(eager);
+  const placeholderRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (shouldLoad) return;
+    const node = placeholderRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '240px 0px' }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [shouldLoad]);
+
+  if (!shouldLoad) {
+    return <div ref={placeholderRef} className={`${className} bg-slate-900/50 animate-pulse`} aria-hidden="true" />;
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  );
+}
+
+function DeferredMedia({
+  src,
+  alt,
+  className,
+  eager = false,
+}: {
+  src: string;
+  alt: string;
+  className: string;
+  eager?: boolean;
+}) {
+  const isVideo = /\.(mp4|webm|ogg)(\?.*)?$/i.test(src);
+
+  if (!isVideo) {
+    return <DeferredImage src={src} alt={alt} className={className} eager={eager} />;
+  }
+
+  return (
+    <video
+      src={src}
+      className={className}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload={eager ? 'auto' : 'metadata'}
+    />
+  );
+}
 
 // Fade-in section wrapper
 function Section({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -72,10 +151,16 @@ export default function ProjectDetail() {
             <span className="text-xs font-mono text-slate-500 bg-slate-800/50 px-2.5 py-1 rounded-md border border-slate-700/50">
               {project.category}
             </span>
-            {project.featured && (
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-cyan-400/70 border border-cyan-500/25 px-2.5 py-1 rounded-full">
-                Featured
+            {project.listTag ? (
+              <span className="text-[10px] font-semibold text-cyan-200 bg-cyan-500/15 border border-cyan-400/60 px-2.5 py-1 rounded-full shadow-[0_0_14px_rgba(34,211,238,0.35)]">
+                {project.listTag}
               </span>
+            ) : (
+              project.featured && (
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-cyan-200 bg-cyan-500/15 border border-cyan-400/60 px-2.5 py-1 rounded-full shadow-[0_0_14px_rgba(34,211,238,0.35)]">
+                  Featured
+                </span>
+              )
             )}
           </div>
 
@@ -106,6 +191,46 @@ export default function ProjectDetail() {
 
         {/* Divider */}
         <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent mb-14" />
+
+        {/* ── IMAGE GALLERY ────────────────────────────────── */}
+        {project.gallery && project.gallery.length > 0 && (
+          <Section className="mb-14">
+            <Block label="Screenshots">
+              {project.gallery.length === 1 ? (
+                /* Single image: full width */
+                <div className="rounded-xl overflow-hidden border border-cyan-500/15 bg-[#040c1a]">
+                  <DeferredMedia
+                    src={project.gallery[0]}
+                    alt={`${project.title} screenshot`}
+                    className="w-full max-h-[75vh] object-contain"
+                    eager
+                  />
+                </div>
+              ) : (
+                /* Multiple images: masonry-style grid */
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {project.gallery.map((src, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.97 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: i * 0.08 }}
+                      className="rounded-xl overflow-hidden border border-cyan-500/15 bg-[#040c1a] group"
+                    >
+                      <DeferredMedia
+                        src={src}
+                        alt={`${project.title} screenshot ${i + 1}`}
+                        className="w-full aspect-video object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                        eager={i === 0}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </Block>
+          </Section>
+        )}
 
         {/* ── PROBLEM / SOLUTION ───────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
