@@ -98,3 +98,61 @@ code[class*="language-"] {
 .token.class-name { color: #fbbf24 !important; }
 .token.operator { color: #94a3b8 !important; }
 .token.punctuation { color: #64748b !important; }
+
+.crt-tv-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(34, 211, 238, 0.28);
+  background: #020510;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.16) inset,
+    0 0 18px rgba(8, 145, 178, 0.2),
+    0 8px 22px rgba(0, 0, 0, 0.45);
+}
+
+.crt-tv-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(200, 250, 255, 0.08) 0px,
+    rgba(200, 250, 255, 0.08) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  opacity: 0.28;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.crt-tv-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.42) 100%),
+    linear-gradient(120deg, rgba(6, 182, 212, 0.15), transparent 35%, rgba(167, 139, 250, 0.1));
+  pointer-events: none;
+  z-index: 3;
+}
+
+.crt-tv-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.04) brightness(0.98);
+  animation: crt-flicker 4.5s linear infinite;
+}
+
+@keyframes crt-flicker {
+  0%, 100% { opacity: 0.99; }
+  50% { opacity: 0.96; }
+}
+
+@media (prefers-reduced-motion: reduce), (max-width: 768px) {
+  .crt-tv-video {
+    animation: none;
+  }
+}

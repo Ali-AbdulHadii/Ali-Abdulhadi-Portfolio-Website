@@ -7,6 +7,10 @@ import ProjectCard from '../components/ui/ProjectCard';
 import TechBadge from '../components/ui/TechBadge';
 import CTASection from '../components/ui/CTASection';
 import ParticleSphere from '../components/ui/ParticleSphere';
+import farhoodGroupVideo from '../../Website Edited Video/Farhood-group.mp4';
+import farhoodPerfumesVideo from '../../Website Edited Video/farhoodperfumes.mp4';
+import farhoodRentalVideo from '../../Website Edited Video/farhoodrental.mp4';
+import unicareCosmeticsVideo from '../../Website Edited Video/unicarecosmetics.mp4';
 
 // Stats data
 const stats = [
@@ -172,6 +176,38 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── WORK GLIMPSE VIDEOS ─────────────────────────────────── */}
+      <section className="py-24 max-w-7xl mx-auto px-6 w-full">
+        <SectionHeader
+          label="Work Preview"
+          title="A Glimpse of My Work"
+          subtitle="A quick look at selected real-world projects delivered across different industries."
+          className="mb-12"
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[farhoodGroupVideo, farhoodPerfumesVideo, farhoodRentalVideo, unicareCosmeticsVideo].map((videoSrc, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              className="crt-tv-frame aspect-video"
+            >
+              <video
+                src={videoSrc}
+                preload="metadata"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="crt-tv-video"
+              />
+            </motion.div>
+          ))}
         </div>
       </section>
 
