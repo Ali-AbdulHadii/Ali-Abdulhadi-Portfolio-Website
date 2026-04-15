@@ -8,9 +8,14 @@ export interface StackItem {
 
 export const techStack: StackItem[] = [
   // Languages
+  { name: 'C#', category: 'Backend' },
+  { name: 'C++', category: 'Backend' },
   { name: '.NET / ASP.NET Core', category: 'Backend' },
   { name: 'PHP', category: 'Backend' },
   { name: 'Python', category: 'Backend' },
+  { name: 'Node.js', category: 'Backend' },
+  { name: 'Slim Framework', category: 'Backend' },
+  { name: 'Ruby on Rails', category: 'Backend' },
   { name: 'Dart', category: 'Mobile' },
   { name: 'JavaScript', category: 'Frontend' },
   { name: 'TypeScript', category: 'Frontend' },
@@ -30,6 +35,7 @@ export const techStack: StackItem[] = [
   // Databases
   { name: 'MySQL', category: 'Database' },
   { name: 'PostgreSQL', category: 'Database' },
+  { name: 'Supabase', category: 'Database' },
   { name: 'Firebase', category: 'Database' },
   // Infrastructure
   { name: 'Cloudflare Enterprise', category: 'Infrastructure' },

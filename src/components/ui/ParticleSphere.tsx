@@ -68,20 +68,27 @@ export default function ParticleSphere() {
 
     // ── Animation state ─────────────────────────────────────────
     let rotY  = 0;      // continuous slow Y rotation
-    let time  = 0;
+    let time  = 0;      // elapsed animation time (seconds)
+    let lastTs: number | null = null;
     const TILT = 0.28;  // static X tilt (radians) — makes the poles visible
     const FOV  = 2.6;   // perspective field of view constant
-    const WAVE_SPEED = 0.16; // bottom -> top breathing sweep speed
+    const ROT_SPEED = 0.066;
+    const PULSE_RATE = 0.0882;
+    const WAVE_SPEED = 0.0672; // bottom <-> top breathing sweep speed
     const WAVE_WIDTH = 0.22; // softness of the breathing band
     const BREATH_AMPLITUDE = 0.07; // how much dots expand/contract along the wave
-    const BREATH_RATE = 2.2; // breathing oscillation rate
+    const BREATH_RATE = 0.924; // breathing oscillation rate
 
     // ── Render loop ─────────────────────────────────────────────
-    const render = () => {
+    const render = (ts: number) => {
+      if (lastTs === null) lastTs = ts;
+      const dt = Math.min((ts - lastTs) / 1000, 0.05); // clamp to avoid giant jumps
+      lastTs = ts;
+
       ctx.clearRect(0, 0, W, H);
 
-      time  += 0.007;
-      rotY  += 0.0011;   // ~0.06 °/frame — very slow
+      time  += dt;
+      rotY  += ROT_SPEED * dt;
 
       // Sphere centre: right-of-centre, vertically centred
       const cx = W * 0.725;
@@ -91,7 +98,7 @@ export default function ParticleSphere() {
       const baseR = Math.min(W * 0.255, H * 0.44, 310);
 
       // Gentle breathing pulse (~±1.5 %)
-      const pulse = 1 + Math.sin(time * 0.21) * 0.015;
+      const pulse = 1 + Math.sin(time * PULSE_RATE) * 0.015;
       const R = baseR * pulse;
 
       // Precompute rotation components
@@ -117,9 +124,9 @@ export default function ParticleSphere() {
         const y1 = d.uy * cosX - z1 * sinX;
         const z2 = d.uy * sinX + z1 * cosX;
 
-        // Bottom -> top breathing sweep on the sphere
-        // waveCenterY travels from -1 (bottom) to +1 (top), then loops
-        const waveCenterY = -1 + ((time * WAVE_SPEED) % 1) * 2;
+        // Smooth bottom <-> top breathing sweep on the sphere
+        // (sinusoidal loop avoids any hard reset/jump)
+        const waveCenterY = Math.sin(time * WAVE_SPEED);
         const distToWave = Math.abs(d.uy - waveCenterY);
         const waveBand = Math.exp(-(distToWave * distToWave) / (2 * WAVE_WIDTH * WAVE_WIDTH));
 

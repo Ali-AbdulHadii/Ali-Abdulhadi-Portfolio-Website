@@ -136,8 +136,8 @@ export default function Home() {
               <div className="col-span-2 bg-[#040c1a] border border-cyan-500/10 rounded-xl p-4 font-mono text-xs space-y-1">
                 <div className="text-slate-600">// core expertise</div>
                 <div><span className="text-cyan-400">const</span> <span className="text-slate-300">stack</span> <span className="text-slate-500">=</span> <span className="text-slate-500">{'['}</span></div>
-                <div className="pl-4 text-emerald-400">"Flutter", "ASP.NET", "PHP",</div>
-                <div className="pl-4 text-emerald-400">"Python", "React", "Cloudflare"</div>
+                <div className="pl-4 text-emerald-400">"Flutter", "ASP.NET", "PHP", "Ruby on Rails",</div>
+                <div className="pl-4 text-emerald-400">"Python", "React", "Cloudflare", "C#"</div>
                 <div><span className="text-slate-500">{']'}</span></div>
               </div>
             </motion.div>

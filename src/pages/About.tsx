@@ -7,18 +7,18 @@ import CTASection from '../components/ui/CTASection';
 
 const timeline = [
   {
-    period: 'May 2017 - Aug 2022',
-    role: 'Full Stack Developer',
-    org: 'ML Build, Istanbul, Turkey',
+    period: 'Dec 2024 - Jan 2026',
+    role: 'Full Stack Developer & Digital Operations Manager',
+    org: 'Farhood Group, Dubai, UAE',
     description:
-      'Designed and developed relational databases for internal construction management systems. Co-created mobile and web applications to streamline project coordination and reporting. Automated data collection and analysis processes to support management decision-making.',
+      'Led digital transformation across multiple departments by integrating automation, marketing, and CRM systems. Developed 10 full corporate websites with custom design from scratch. Built custom Odoo CRM modules for sales and production management. Improved operational efficiency by 15% and reduced production costs by 10% through automation and process redesign.',
   },
   {
-    period: 'Aug 2022 - Mar 2023',
-    role: 'Sales Representative',
-    org: 'Think Technology, Istanbul, Turkey',
+    period: 'Jun 2024 - Oct 2024',
+    role: 'Full Stack Developer / Marketing Executive (Freelance)',
+    org: 'Anwar Makaah Perfumes, Ajman, UAE',
     description:
-      'Promoted financial technology products and trading platforms to retail and institutional clients. Managed client acquisition and onboarding, resulting in a 20% growth in active accounts. Collaborated with the development team to provide user feedback for trading software improvements.',
+      'Created and launched a fully functional e-commerce website with SEO optimization. Designed digital marketing campaigns targeting the Gulf market, resulting in strong online engagement. Developed lead-tracking tools and automated reporting systems to optimize advertising performance.',
   },
   {
     period: 'May 2023 - Jun 2024',
@@ -28,25 +28,18 @@ const timeline = [
       'Developed full-stack websites and cross-platform applications using C#, ASP.NET, HTML, MySQL, SQLite, Supabase, and Flutter. Integrated backend APIs and optimized databases for scalability and security. Designed digital tools for client automation, CRM integration, and internal data tracking.',
   },
   {
-    period: 'Jun 2024 - Oct 2024',
-    role: 'Full Stack Developer / Marketing Executive',
-    org: 'Anwar Makaah Perfumes, Ajman, UAE',
+    period: 'Aug 2022 - Mar 2023',
+    role: 'Sales Representative',
+    org: 'Think Technology, Istanbul, Turkey',
     description:
-      'Created and launched a fully functional e-commerce website with SEO optimization. Designed digital marketing campaigns targeting the Gulf market, resulting in strong online engagement. Developed lead-tracking tools and automated reporting systems to optimize advertising performance.',
+      'Promoted financial technology products and trading platforms to retail and institutional clients. Managed client acquisition and onboarding, resulting in a 20% growth in active accounts. Collaborated with the development team to provide user feedback for trading software improvements.',
   },
   {
-    period: 'Oct 2024 - Dec 2024',
-    role: 'Top Field Researcher',
-    org: 'Digital Dubai / Mohammed Bin Rashid Dubai Statistics Center, Dubai, UAE',
+    period: 'May 2017 - Aug 2022',
+    role: 'Full Stack Developer',
+    org: 'ML Build, Istanbul, Turkey',
     description:
-      'Conducted in-depth data collection and digital analysis for government-led statistics initiatives. Supported research on digital infrastructure and population data trends. Contributed to the preparation and digital compilation of statistical reports and field validation systems.',
-  },
-  {
-    period: 'Dec 2024 - Jan 2026',
-    role: 'Full Stack Developer & Digital Operations Manager',
-    org: 'Farhood Group, Dubai, UAE',
-    description:
-      'Led digital transformation across multiple departments by integrating automation, marketing, and CRM systems. Developed 10 full corporate websites with custom design from scratch. Built custom Odoo CRM modules for sales and production management. Improved operational efficiency by 15% and reduced production costs by 10% through automation and process redesign.',
+      'Designed and developed relational databases for internal construction management systems. Co-created mobile and web applications to streamline project coordination and reporting. Automated data collection and analysis processes to support management decision-making.',
   },
 ];
 
