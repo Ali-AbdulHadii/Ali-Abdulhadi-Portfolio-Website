@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 declare const process: {
   env: Record<string, string | undefined>
 }
@@ -11,7 +13,7 @@ const githubPagesBase = repositoryName && !isUserOrOrgSite ? `/${repositoryName}
 
 export default defineConfig({
   base: process.env.GITHUB_ACTIONS ? githubPagesBase : '/',
-  plugins: [react()],
+  plugins: [react(), cloudflare()],
   resolve: {
     alias: {
       '@': '/src',
