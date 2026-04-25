@@ -43,7 +43,7 @@ export default function ParticleSphere() {
     // Structured rings give a legible sphere silhouette,
     // unlike Fibonacci which looks more like a cloud.
     const dots: Dot[] = [];
-    const LAT_RINGS = 26;
+    const LAT_RINGS = window.innerWidth < 768 ? 16 : 26;
 
     for (let ring = 0; ring <= LAT_RINGS; ring++) {
       const phi   = (ring / LAT_RINGS) * Math.PI;  // 0 → π

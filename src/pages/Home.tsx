@@ -43,7 +43,7 @@ export default function Home() {
         {/* Subtle left-side ambient glow — keeps left column legible */}
         <div className="absolute top-1/3 left-0 w-[420px] h-[420px] bg-cyan-500/4 rounded-full blur-[110px] pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-6 py-24">
+        <div className="relative max-w-7xl mx-auto px-6 py-12 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left: Copy */}
             <motion.div
@@ -62,7 +62,7 @@ export default function Home() {
 
               {/* Headline */}
               <div className="space-y-3">
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
                   <span className="text-slate-100">Ali Thari</span>
                   <br />
                   <span className="text-gradient-cyan">Abdulhadi</span>
@@ -348,7 +348,7 @@ export default function Home() {
       {/* ── ABOUT SNIPPET ──────────────────────────────────────── */}
       <section className="py-24 bg-[#040c1a] border-y border-cyan-500/8">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <SectionHeader
               label="About Me"
               title="Engineer. Builder. Problem Solver."

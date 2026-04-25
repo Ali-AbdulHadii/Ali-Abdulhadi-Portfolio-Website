@@ -77,7 +77,7 @@ export default function About() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-20 grid grid-cols-1 lg:grid-cols-2 gap-14 items-start"
+          className="mb-20 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start"
         >
           <div className="space-y-6">
             <div className="flex items-center gap-3">

@@ -13,7 +13,12 @@ export default function CursorTrail() {
   const currentRef = useRef<Point>({ x: 0, y: 0 });
   const isActiveRef = useRef(false);
 
+  // Touch devices have no cursor — skip the canvas entirely
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
   useEffect(() => {
+    if (isTouch) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -105,6 +110,8 @@ export default function CursorTrail() {
       window.removeEventListener('blur', handlePointerLeave);
     };
   }, []);
+
+  if (isTouch) return null;
 
   return (
     <canvas
